@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import numpy as np
 from scipy import stats
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def calculate_iat_d6_score_from_custom_blocks(
     df_participant: pd.DataFrame,
@@ -290,6 +292,75 @@ else:
         else:
             print("\nNot enough D-scores for median split ")
 
+# plots
+    if all_d_scores_calculated:
+
+        # histogram of d-scores
+        plt.figure(figsize=(8, 6))
+        sns.histplot(d_scores_array, kde=True, bins=10)
+        plt.title('Distribution of IAT D-scores')
+        plt.xlabel('D-score')
+        plt.ylabel('Frequency')
+        plt.axvline(mean_d, color='r', linestyle='dashed', linewidth=1, label=f'Mean D: {mean_d:.3f}')
+        plt.axvline(median_d, color='g', linestyle='dashed', linewidth=1, label=f'Overall Median D: {median_d:.3f}')
+        plt.axvline(0, color='k', linestyle='solid', linewidth=1, label='Zero Point')
+        plt.legend()
+        plt.tight_layout() 
+        plt.show()
+
+
+
+        # boxplot of d-scores by median split groups
+        if 'scores_df' not in locals() or 'iat_group' not in scores_df.columns:
+            temp_scores_df = pd.DataFrame({
+                'id': [f"P{pid}" for pid in participant_ids_for_scores], 
+                'd_score': d_scores_array
+            })
+            temp_scores_df['iat_group'] = np.where(
+                temp_scores_df['d_score'] < median_d,
+                'Below Median',
+                'At/Above Median'
+            )
+        else: 
+            temp_scores_df = scores_df.copy()
+
+
+        if not temp_scores_df.empty:
+            plt.figure(figsize=(10, 7)) 
+            ax = sns.boxplot(x='iat_group', y='d_score', data=temp_scores_df, order=['Below Median', 'At/Above Median'],
+                             palette={'Below Median': 'skyblue', 'At/Above Median': 'lightcoral'}) 
+            sns.stripplot(x='iat_group', y='d_score', data=temp_scores_df, order=['Below Median', 'At/Above Median'],
+                          color='black', alpha=0.4, jitter=True, ax=ax) 
+
+            ax.axhline(median_d, color='purple', linestyle='dotted', linewidth=2, label=f'Overall Median ({median_d:.3f})')
+
+            group_medians = temp_scores_df.groupby('iat_group')['d_score'].median()
+            
+            for i, group_name in enumerate(['Below Median', 'At/Above Median']):
+                if group_name in group_medians:
+                    group_median_val = group_medians[group_name]
+                    text_y_offset = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.02 
+                    text_y = group_median_val + text_y_offset if group_median_val >=0 else group_median_val - text_y_offset*2
+                    if group_name == 'Below Median' and group_median_val < -1: 
+                         text_y = group_median_val + text_y_offset * 2
+
+
+                    ax.text(i,
+                            text_y, # y-position for the text
+                            f'Group Median: {group_median_val:.3f}',
+                            horizontalalignment='center',
+                            verticalalignment='bottom',
+                            color='black',
+                            fontsize=9, 
+                            bbox=dict(facecolor='white', alpha=0.6, edgecolor='none', pad=0.2))
+
+            plt.title('D-scores by Median Split Group')
+            plt.xlabel('IAT Group (Split by Overall Median D-score)')
+            plt.ylabel('D-score')
+            plt.axhline(0, color='k', linestyle='dashed', linewidth=1, label='Zero Point')
+            plt.legend(loc='best')
+            plt.tight_layout()
+            plt.show()
 
 # linor
 """
