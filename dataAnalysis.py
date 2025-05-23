@@ -5,6 +5,11 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
+plt.rcParams['font.family'] = 'Linux Libertine O'
+plt.rcParams['figure.dpi'] = 600
+
+
 def calculate_iat_d6_score_from_custom_blocks(
     df_participant: pd.DataFrame,
     block3_4_condition_name: str,
@@ -122,7 +127,8 @@ def calculate_iat_d6_score_from_custom_blocks(
     return d6_score
 
 # getting data
-folder_path = r'C:\Users\pgalt\Desktop\tsp-main\implicit-association-test' 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+folder_path = os.path.join(script_dir, "implicit-association-test")
 
 list_of_dataframes = []
 for file_name in os.listdir(folder_path):
