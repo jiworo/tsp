@@ -4,9 +4,10 @@ import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
 import seaborn as sns
+import re
 
 plt.rcParams.update({'font.size': 16})
-plt.rcParams['font.family'] = 'Linux Libertine O'
+# plt.rcParams['font.family'] = 'Linux Libertine O'
 plt.rcParams['figure.dpi'] = 600
 
 
@@ -148,6 +149,7 @@ for file_name in os.listdir(folder_path):
                 print(f"No data header ('rowNo') found in {file_name}, skip.")
                 continue
             df = pd.read_csv(file_path, skiprows=header_idx)
+            df['participant_id'] = file_name.split('.')[0][-3:]
             list_of_dataframes.append(df)
         except Exception as e:
             print(f"Failed to process {file_name}: {e}")
@@ -181,7 +183,7 @@ else:
             df_participant['participant_id'] = participant_num_actual
 
         outer_loop_pid_value = df_participant['participant_id'].iloc[0]
-        outer_loop_participant_label = f"P{outer_loop_pid_value}"
+        outer_loop_participant_label = f"{outer_loop_pid_value}"
         print(f"\nProcessing {outer_loop_participant_label}...")
 
         required_cols = ['rowNo', 'condition1', 'RT', 'correct']
@@ -378,5 +380,7 @@ they have wo columns id, d_score
 the id is the number of the participant, for example P12 is participant 12, i recommend 
 using this id's for your analysis as well in case the order of the csv files changes or something
 """
-# print(group_below_median)
-# print(participant_ids_for_scores)
+
+print(group_below_median[:5])
+print(len(group_at_or_above_median))
+print(participant_ids_for_scores)
