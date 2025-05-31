@@ -25,7 +25,7 @@ def calculate_iat_d6_score_from_custom_blocks(
     """
     # .iloc[0] gets the first element's value without taking into account  index labels.
     func_internal_pid_value = df_participant['participant_id'].iloc[0]
-    log_pid_label = f"P{func_internal_pid_value}"
+    log_pid_label = f"{func_internal_pid_value}"
 
     rt_too_fast_threshold = 300  # study tresholds given
     rt_too_slow_threshold = 10000
@@ -271,7 +271,7 @@ else:
             print(f"\n--- Median Split Analysis (Median D-score = {median_d:.3f}) ---")
 
             scores_df = pd.DataFrame(
-                {'id': [f"P{pid}" for pid in participant_ids_for_scores], 'd_score': d_scores_array})
+                {'id': [f"{pid}" for pid in participant_ids_for_scores], 'd_score': d_scores_array})
 
             group_below_median = scores_df[scores_df['d_score'] < median_d]
             group_at_or_above_median = scores_df[scores_df['d_score'] >= median_d]
@@ -323,7 +323,7 @@ else:
         # boxplot of d-scores by median split groups
         if 'scores_df' not in locals() or 'iat_group' not in scores_df.columns:
             temp_scores_df = pd.DataFrame({
-                'id': [f"P{pid}" for pid in participant_ids_for_scores],
+                'id': [f"{pid}" for pid in participant_ids_for_scores],
                 'd_score': d_scores_array
             })
             temp_scores_df['iat_group'] = np.where(
@@ -381,6 +381,10 @@ the id is the number of the participant, for example P12 is participant 12, i re
 using this id's for your analysis as well in case the order of the csv files changes or something
 """
 
-print(group_below_median[:5])
-print(len(group_at_or_above_median))
-print(participant_ids_for_scores)
+group_below_median['group'] = 'B'
+group_at_or_above_median['group'] = 'A'
+
+results = pd.concat((group_below_median, group_at_or_above_median))
+
+with open('groups.csv', 'w') as file:
+    file.write(results.to_csv(index=False))
