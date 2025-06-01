@@ -309,12 +309,14 @@ else:
 
         # histogram of d-scores
         plt.figure(figsize=(8, 6))
-        sns.histplot(d_scores_array, color=Color.BROWN.value, kde=True, bins=10)
+        sns.histplot(d_scores_array, color=Color.LADY_BUG.value, bins=10, alpha=1)
+        sns.kdeplot(d_scores_array, color=Color.MAHOGANY.value, linewidth=2)
         # plt.title('Distribution of IAT D-scores')
         plt.xlabel('D-score')
         plt.ylabel('Frequency')
-        plt.axvline(mean_d, color=Color.RED.value, linestyle='dashed', linewidth=1, label=f'Mean D: {mean_d:.3f}')
-        plt.axvline(median_d, color=Color.BLUE.value, linestyle='dashed', linewidth=1, label=f'Overall Median D: {median_d:.3f}')
+        plt.axvline(mean_d, color=Color.MAROON.value, linestyle='dashed', linewidth=1, label=f'Mean D: {mean_d:.3f}')
+        plt.axvline(median_d, color=Color.MAHOGANY.value, linestyle='dashed', linewidth=1,
+                    label=f'Overall Median D: {median_d:.3f}')
         plt.axvline(0, color='k', linestyle='solid', linewidth=1, label='Zero Point')
         plt.legend()
         plt.tight_layout()
@@ -337,11 +339,11 @@ else:
         if not temp_scores_df.empty:
             plt.figure(figsize=(10, 7))
             ax = sns.boxplot(x='iat_group', y='d_score', data=temp_scores_df, order=['Below Median', 'At/Above Median'],
-                             palette={'Below Median': Color.RED.value, 'At/Above Median': Color.BLUE.value})
+                             palette={'Below Median': Color.MAROON.value, 'At/Above Median': Color.MAHOGANY.value})
             sns.stripplot(x='iat_group', y='d_score', data=temp_scores_df, order=['Below Median', 'At/Above Median'],
                           color='black', alpha=0.4, jitter=True, ax=ax)
 
-            ax.axhline(median_d, color=Color.BROWN.value, linestyle='dotted', linewidth=2,
+            ax.axhline(median_d, color=Color.LADY_BUG.value, linestyle='dotted', linewidth=2,
                        label=f'Overall Median ({median_d:.3f})')
 
             group_medians = temp_scores_df.groupby('iat_group')['d_score'].median()

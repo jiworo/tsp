@@ -99,7 +99,7 @@ q_long = pd.melt(q, id_vars='Group', value_vars=['Awareness', 'Responsibility'],
                  var_name='Variable', value_name='Value')
 
 plt.figure(figsize=(10, 7))
-ax = sns.boxplot(data=q_long, x='Variable', y='Value', hue='Group', palette=[Color.RED.value, Color.BLUE.value])
+ax = sns.boxplot(data=q_long, x='Variable', y='Value', hue='Group', palette=[Color.MAROON.value, Color.MAHOGANY.value])
 
 # #
 # for i, group_name in enumerate(['Below Median', 'At/Above Median']):
