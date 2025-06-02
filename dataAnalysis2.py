@@ -83,47 +83,25 @@ print("responsibility+IAT t-test:", stats.ttest_ind(above_median_responsibility,
 print("awareness t-test:", stats.ttest_1samp(q['Awareness'], 0), sep='\n')
 print("responsibility t-test:", stats.ttest_1samp(q['Responsibility'], 0), sep='\n')
 
-plt.boxplot((q['Awareness'], q['Responsibility']))
-plt.xticks([1, 2], labels=('Awareness score', 'Responsibility score'))
-plt.ylim([-1, 1])
-plt.ylabel('score between -2 and 2')
-plt.axhline(0, color='r')
-plt.show()
-
-plt.boxplot((above_median_awareness, below_median_awareness))
-plt.show()
-plt.boxplot((above_median_responsibility, below_median_responsibility))
-plt.show()
-
 q_long = pd.melt(q, id_vars='Group', value_vars=['Awareness', 'Responsibility'],
                  var_name='Variable', value_name='Value')
 
+plt.figure(figsize=(10,7))
+ax = sns.boxplot(data=q_long, x='Variable', y='Value', palette=[Color.MAROON.value])
+plt.ylim([-1, 1])
+plt.xlabel("Questionnaire Score Distributions")
+plt.ylabel('Score')
+plt.axhline(0, color='r', linestyle='dashed', label='Zero Point')
+plt.legend()
+plt.savefig('Questionnaire Score Distribution.png')
+plt.show()
+
 plt.figure(figsize=(10, 7))
 ax = sns.boxplot(data=q_long, x='Variable', y='Value', hue='Group', palette=[Color.MAROON.value, Color.MAHOGANY.value])
-
-# #
-# for i, group_name in enumerate(['Below Median', 'At/Above Median']):
-#     group_median_val = group_medians[group_name]
-#     text_y_offset = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.02
-#     text_y = group_median_val + text_y_offset if group_median_val >= 0 else group_median_val - text_y_offset * 2
-#     if group_name == 'Below Median' and group_median_val < -1:
-#         text_y = group_median_val + text_y_offset * 2
-# 
-#     ax.text(i,
-#             text_y,  # y-position for the text
-#             f'Group Median: {group_median_val:.3f}',
-#             horizontalalignment='center',
-#             verticalalignment='bottom',
-#             color='black',
-#             fontsize=9,
-#             bbox=dict(facecolor='white', alpha=0.6, edgecolor='none', pad=0.2))
-
-# plt.title('Questionnaire scores by Median Split Group')
 plt.xlabel('IAT Group (Split by Overall Median D-score)')
-plt.ylabel('D-score')
+plt.ylabel('Score')
 plt.axhline(0, color='k', linestyle='dashed', linewidth=1, label='Zero Point')
 plt.legend(loc='best')
 plt.tight_layout()
 plt.savefig('Questionnaire scores by Median Split Group.png')
 plt.show()
-# plt.savefig("D-scores by Median Split Group.png")
