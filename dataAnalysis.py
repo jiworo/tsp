@@ -309,12 +309,12 @@ else:
 
         # histogram of d-scores
         plt.figure(figsize=(8, 6))
-        sns.histplot(d_scores_array, color=Color.LADY_BUG.value, bins=10, alpha=1)
+        sns.histplot(d_scores_array, color=Color.BERRY.value, bins=10, alpha=1)
         sns.kdeplot(d_scores_array, color=Color.MAHOGANY.value, linewidth=2)
         # plt.title('Distribution of IAT D-scores')
-        plt.xlabel('D-score')
+        plt.xlabel('D-Score')
         plt.ylabel('Frequency')
-        plt.axvline(mean_d, color=Color.MAROON.value, linestyle='dashed', linewidth=1, label=f'Mean D: {mean_d:.3f}')
+        plt.axvline(mean_d, color=Color.MAHOGANY.value, linestyle='dashed', linewidth=1, label=f'Mean D: {mean_d:.3f}')
         plt.axvline(median_d, color=Color.MAHOGANY.value, linestyle='dashed', linewidth=1,
                     label=f'Overall Median D: {median_d:.3f}')
         plt.axvline(0, color='k', linestyle='solid', linewidth=1, label='Zero Point')
@@ -339,16 +339,16 @@ else:
         if not temp_scores_df.empty:
             plt.figure(figsize=(10, 7))
             ax = sns.boxplot(x='iat_group', y='d_score', data=temp_scores_df, order=['Below Median', 'At/Above Median'],
-                             palette={'Below Median': Color.MAROON.value, 'At/Above Median': Color.MAHOGANY.value})
+                             palette={'Below Median': Color.LADY_BUG.value, 'At/Above Median': Color.MAROON.value})
             sns.stripplot(x='iat_group', y='d_score', data=temp_scores_df, order=['Below Median', 'At/Above Median'],
                           color='black', alpha=0.4, jitter=True, ax=ax)
 
-            ax.axhline(median_d, color=Color.LADY_BUG.value, linestyle='dotted', linewidth=2,
+            ax.axhline(median_d, color=Color.BERRY.value, linestyle='dotted', linewidth=2,
                        label=f'Overall Median ({median_d:.3f})')
 
             group_medians = temp_scores_df.groupby('iat_group')['d_score'].median()
 
-            for i, group_name in enumerate(['Below Median', 'At/Above Median']):
+            for i, group_name in enumerate(['Below Overall D-score Median', 'At/Above Overall D-score Median']):
                 if group_name in group_medians:
                     group_median_val = group_medians[group_name]
                     text_y_offset = (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.02
@@ -366,8 +366,8 @@ else:
                             bbox=dict(facecolor='white', alpha=0.6, edgecolor='none', pad=0.2))
 
             # plt.title('D-scores by Median Split Group')
-            plt.xlabel('IAT Group (Split by Overall Median D-score)')
-            plt.ylabel('D-score')
+            plt.xlabel('IAT Group Split by Overall Median D-Score')
+            plt.ylabel('D-Score')
             plt.axhline(0, color='k', linestyle='dashed', linewidth=1, label='Zero Point')
             plt.legend(loc='best')
             plt.tight_layout()

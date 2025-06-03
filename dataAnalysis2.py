@@ -10,7 +10,6 @@ plt.rcParams.update({'font.size': 16})
 plt.rcParams['font.family'] = 'Linux Libertine O'
 plt.rcParams['figure.dpi'] = 600
 
-
 # get data
 with open('groups.csv', 'r') as file:
     IAT_results = pd.read_csv(file)
@@ -86,22 +85,22 @@ print("responsibility t-test:", stats.ttest_1samp(q['Responsibility'], 0), sep='
 q_long = pd.melt(q, id_vars='Group', value_vars=['Awareness', 'Responsibility'],
                  var_name='Variable', value_name='Value')
 
-plt.figure(figsize=(10,7))
-ax = sns.boxplot(data=q_long, x='Variable', y='Value', palette=[Color.MAROON.value])
+plt.figure(figsize=(10, 7))
+ax = sns.boxplot(data=q_long, x='Variable', y='Value', palette=[Color.BERRY.value])
 plt.ylim([-1, 1])
 plt.xlabel("Questionnaire Score Distributions")
 plt.ylabel('Score')
-plt.axhline(0, color='r', linestyle='dashed', label='Zero Point')
+plt.axhline(0, color='k', linestyle='dashed', label='Zero Point')
 plt.legend()
 plt.savefig('Questionnaire Score Distribution.png')
-plt.show()
+# plt.show()
 
 plt.figure(figsize=(10, 7))
-ax = sns.boxplot(data=q_long, x='Variable', y='Value', hue='Group', palette=[Color.MAROON.value, Color.MAHOGANY.value])
-plt.xlabel('IAT Group (Split by Overall Median D-score)')
+ax = sns.boxplot(data=q_long, x='Variable', y='Value', hue='Group', palette=[Color.LADY_BUG.value, Color.MAROON.value])
+plt.xlabel('Questionnaire Score Distributions by IAT Group')
 plt.ylabel('Score')
 plt.axhline(0, color='k', linestyle='dashed', linewidth=1, label='Zero Point')
 plt.legend(loc='best')
 plt.tight_layout()
 plt.savefig('Questionnaire scores by Median Split Group.png')
-plt.show()
+# plt.show()
