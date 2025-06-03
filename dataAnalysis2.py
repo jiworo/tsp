@@ -97,7 +97,7 @@ plt.savefig('Questionnaire Score Distribution.png')
 
 plt.figure(figsize=(10, 7))
 ax = sns.boxplot(data=q_long, x='Variable', y='Value', hue='Group', palette=[Color.LADY_BUG.value, Color.MAROON.value])
-plt.xlabel('Questionnaire Score Distributions by IAT Group')
+plt.xlabel('Questionnaire Scores Distributions by IAT Group')
 plt.ylabel('Score')
 plt.axhline(0, color='k', linestyle='dashed', linewidth=1, label='Zero Point')
 plt.legend(loc='best')
